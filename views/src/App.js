@@ -3,6 +3,7 @@ import Register from "./Pages/Register";
 import Login from "./Pages/Login";
 import UserTerminal from "./Pages/UserTerminal";
 import UserGui from "./Pages/UserGui";
+import AdminGui from "./Pages/AdminGui";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/UserGui" element={<UserGui />}></Route>
           <Route path="/" element={<Login />}></Route>
           <Route path="/File-Sharing-UI" element={<Login />}></Route>
+          <Route path="/AdminGui" element={<AdminGui />}></Route>
         </Routes>
       </div>
     </BrowserRouter>
