@@ -84,7 +84,7 @@ const ClientGui = () => {
   }, []);
 
   return (
-    <div className="homeContainter w-[1200px] h-[900px] rounded-lg bg-[#5A6465] shadow-lg shadow-cyan-500/50">
+    <div className="homeContainter w-[1200px] h-[100%] rounded-lg bg-[#5A6465] shadow-lg shadow-cyan-500/50">
       <Header></Header>
       <div className="Maincontent w-[1100px] h-[750px] mx-auto flex items-center justify-between">
         <div className="w-[49%] h-[100%] bg-[#252A33] rounded-lg">

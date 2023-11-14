@@ -8,7 +8,7 @@ import AdminGui from "./Pages/AdminGui";
 function App() {
   return (
     <BrowserRouter>
-      <div className="flex w-full h-[100vh] items-center justify-center">
+      <div className="flex w-full h-[100%] items-center justify-center">
         <Routes>
           <Route path="/Register" element={<Register />}></Route>
           <Route path="/Login" element={<Login />}></Route>
