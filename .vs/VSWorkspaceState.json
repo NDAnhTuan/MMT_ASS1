@@ -1,7 +1,14 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\views",
+    "\\views\\src",
+    "\\views\\src\\APIs",
+    "\\views\\src\\APIs\\P2pAPI",
+    "\\views\\src\\APIs\\ServerAPI",
+    "\\views\\src\\Components",
+    "\\views\\src\\Pages"
   ],
-  "SelectedNode": "\\C:\\Users\\ADMIN\\Source\\Repos\\MMT_ASS1",
+  "SelectedNode": "\\views\\src\\Pages\\AdminGui.js",
   "PreviewInSolutionExplorer": false
 }
