@@ -66,7 +66,10 @@ def create_item_frame(item : Item):
     ping_button.pack(side = "right")
 
     return (last_ping_time_label,status_label)
-
+def clear_frame(frame):
+    # Xóa tất cả widget con trong frame
+    for widget in frame.winfo_children():
+        widget.destroy()
 def discover_popup(hostname):
     popup = tk.Toplevel(root)
     popup.title("List of files in "+hostname)
@@ -121,14 +124,15 @@ def discover(hostname):
 def ping_all():
     for item_tuple in items:
         item, (time_label, status_label) = item_tuple
-        ping(item,time_label,status_label)
-        
-       
+        ping(item,time_label,status_label)  
+    update_item() 
 items = []
 def update_item():
+    clear_frame(list_frame)
     if os.path.exists(directory_path):
         files = os.listdir(directory_path)
-
+        global items
+        items.clear()
         for file in files:
             if file.endswith(".txt"):
                 hostname = file.split('.')[0]

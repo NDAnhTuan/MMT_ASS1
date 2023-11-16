@@ -8,8 +8,10 @@ from datetime import datetime
 import shutil
 from Client import *
 # import Client
+clientIP = socket.gethostbyname(socket.gethostname())
+hostnameClient = "client" + clientIP.split('.')[-1]
+client = Client(10, serverSocket = ("192.168.1.18", 1234), clientSocket = (clientIP, 5002), hostname = hostnameClient)
 
-client = Client(10, serverSocket = ("192.168.1.18", 1234))
 client.connectServer()
 client.publish(fname = None, allFile= True)
 

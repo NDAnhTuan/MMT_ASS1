@@ -64,11 +64,17 @@ class Server:
 
     def handleMessage(self, packet: HSTTP, senderSocket: socket.socket = None):
         client, addr = senderSocket
-
+        print(f"client: {client} and addr: {addr}")
+        client_IP, client_Port = addr
         if packet is not None and type(packet) is HSTTP:
             print(packet.hostname, ": ", client)
             if packet.type == 0: # open connection
-                #print("open: ", packet.hostname)
+                # print("open: ", packet.hostname)
+                fileName = packet.hostname + ".txt"
+                print(fileName)
+                filepath = os.path.join("/", fileName)
+                if not os.path.isfile(filepath):
+                    open(fileName,"a")
                 tempPack = HSTTP()
                 tempPack.openConnection(data = addr) # send back new socket instance 
                 self.sendToHost(tempPack, client)

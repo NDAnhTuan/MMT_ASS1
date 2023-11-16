@@ -1,14 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\views",
-    "\\views\\src",
+    "\\ass1",
     "\\views\\src\\APIs",
     "\\views\\src\\APIs\\P2pAPI",
     "\\views\\src\\APIs\\ServerAPI",
     "\\views\\src\\Components",
     "\\views\\src\\Pages"
   ],
-  "SelectedNode": "\\views\\src\\Pages\\AdminGui.js",
+  "SelectedNode": "\\run.bat",
   "PreviewInSolutionExplorer": false
 }
