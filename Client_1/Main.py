@@ -1,4 +1,5 @@
 ﻿from fileinput import filename
+from tkinter import messagebox
 import os, mimetypes, re, shutil
 from email.mime import image
 import tkinter as tk
@@ -68,7 +69,7 @@ def create_item_frame(item):
     last_fetch_time_label = tk.Label(info_frame, text=item.last_fetch_time, width = 20)
     last_fetch_time_label.grid(row=0, column=4, padx=50)
 
-    delete_button = tk.Button(item_frame, text="Delete", command=lambda: delete_item(item_frame, item), bg="#FF6666", activebackground="#FFCCCC")
+    delete_button = tk.Button(item_frame, text="Delete", command=lambda: delete_item(item_frame, item), bg="red",fg="white", activebackground="#FFCCCC")
     delete_button.pack(side="right")
 
 def delete_item(item_frame, item):
@@ -169,42 +170,21 @@ def request_file_popup():
             # Đóng cửa sổ popup sau khi xử lý xong
             request_popup.destroy()
 
-    request_button = tk.Button(request_popup, text="Request", command=request_fetch, bg="#00FF66", activebackground="#CCFF99")
+    request_button = tk.Button(request_popup, text="Request", command=request_fetch, bg="#4CAF50", fg="white", activebackground="#CCFF99")
     request_button.pack()
 
 def show_accept_popup(client_request_name, request_file_name):
-    popup = tk.Toplevel(root)
-    popup.title("Accept request")
+    response = messagebox.askyesno(
+        "Accept fetch request",
+        f"Accept fetch request with file '{request_file_name}' from '{client_request_name}'?"
+    )
 
-    # Tạo một nhãn trong cửa sổ popup
-    label = tk.Label(popup, text="Accept fetch request with file '" + request_file_name + "' from '" + client_request_name +"'")
-    label.pack(padx=10, pady=10)
-
-    # Hàm xử lý khi nút "Accept" được nhấn
-    def accept_action():
-        popup.destroy()
-        if(client.fetch(request_file_name)):
+    if response:
+        if client.fetch(request_file_name):
             client.publish(request_file_name)
             add_item(request_file_name)
-        else :
-            print("fetch fail !")
-        #todo
-
-    # Hàm xử lý khi nút "Cancel" được nhấn
-    def cancel_action():
-        popup.destroy()
-        #todo
-
-    # Tạo nút "Accept" và gắn với hàm xử lý
-    accept_button = tk.Button(popup, text="Accept", command=accept_action, bg="#00FF66", activebackground="#CCFF99")
-    accept_button.pack(side="left", padx=10, pady=10)
-
-    # Tạo nút "Cancel" và gắn với hàm xử lý
-    cancel_button = tk.Button(popup, text="Cancel", command=cancel_action, bg="#FF6666", activebackground="#FFCCCC")
-    cancel_button.pack(side="right", padx=10, pady=10)
-
-    # Chạy cửa sổ popup
-    popup.mainloop()
+        else:
+            messagebox.showerror("Fetch Failed", "Failed to fetch the file.")
 
 def on_enter(event):
     # Lấy nội dung đã nhập từ trường nhập liệu

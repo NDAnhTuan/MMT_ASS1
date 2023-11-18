@@ -249,7 +249,7 @@ button_frame = tk.Frame(root, borderwidth=2, relief="solid", pady=10)
 button_frame.pack(side="bottom", fill="x", anchor="s")  # Thay đổi khoảng cách ngang
 
 # Tạo các nút
-button_reload = tk.Button(button_frame, text="Reload", bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
+button_reload = tk.Button(button_frame, text="Reload", bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00", command=update_item)
 button_reload.pack(side="left", padx=10)
 
 button_ping_all = tk.Button(button_frame, text="Ping all", command=ping_all, bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
