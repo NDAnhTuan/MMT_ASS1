@@ -10,7 +10,7 @@ from Client import *
 # import Client
 clientIP = socket.gethostbyname(socket.gethostname())
 hostnameClient = "client" + clientIP.split('.')[-1]
-client = Client(10, serverSocket = ("192.168.1.18", 1234), clientSocket = (clientIP, 5002), hostname = hostnameClient)
+client = Client(10, serverSocket = ("192.168.124.235", 1234), clientSocket = (clientIP, 5002), hostname = hostnameClient)
 
 client.connectServer()
 client.publish(fname = None, allFile= True)
@@ -270,16 +270,16 @@ root.geometry("600x400+100+100")
 root.resizable(width=False, height=False)
 
 # Tạo khung cho vùng phía trên
-header_frame = tk.Frame(root, borderwidth=2, relief="solid")
+header_frame = tk.Frame(root, borderwidth=2, relief="solid", bg="#4CAF50")  
 header_frame.pack(fill="x")
 
-header_icon_label = tk.Label(header_frame, text="Icon", bg="lightgray")
+header_icon_label = tk.Label(header_frame, text="Icon", bg="#4CAF50", fg="white")  
 header_icon_label.grid(row=0, column=0, padx=10, sticky="w")
 
-header_name_label = tk.Label(header_frame, text="Name", bg="lightgray")
+header_name_label = tk.Label(header_frame, text="Name", bg="#4CAF50", fg="white")  
 header_name_label.grid(row=0, column=1, padx=60, sticky="w")
 
-header_time_label = tk.Label(header_frame, text="Last Fetch Time", bg="lightgray")
+header_time_label = tk.Label(header_frame, text="Last Fetch Time", bg="#4CAF50", fg="white")  
 header_time_label.grid(row=0, column=2, padx=80, sticky="e")
 
 # Tạo thanh trượt
@@ -335,15 +335,18 @@ scrollbar.config(command=canvas.yview)
 
 # Tạo khung cho nút
 button_frame = tk.Frame(root, borderwidth=2, relief="solid", pady=10)
-button_frame.pack(side="bottom", fill="x", anchor="s")  # Thay đổi khoảng cách ngang
+button_frame.pack(side="bottom", fill="x", anchor="s")  
 
 # Tạo nút button
-button_publish = tk.Button(button_frame, text="Publish file", command= publish_file_btn, bg="#00FF66", activebackground="#CCFF99")
-button_request = tk.Button(button_frame, text="Request fetch file", comman = request_file_popup, bg="#00FF66", activebackground="#CCFF99")
-button_cli = tk.Button(button_frame, text="Open CLI", comman = show_cli_popup, bg="#00FF66", activebackground="#CCFF99")
-button_publish.pack(side="left", padx=60)  # Thay đổi khoảng cách ngang
-button_request.pack(side="left", padx=50)  # Thay đổi khoảng cách ngang
-button_cli.pack(side="left", padx=50)  # Thay đổi khoảng cách ngang
+button_publish = tk.Button(button_frame, text="Publish file", command=publish_file_btn, bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
+button_request = tk.Button(button_frame, text="Request fetch file", command=request_file_popup, bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
+button_cli = tk.Button(button_frame, text="Open CLI", command=show_cli_popup, bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
+button_publish.pack(side="left", padx=60)  
+button_request.pack(side="left", padx=50)  
+button_cli.pack(side="left", padx=50)
+
+
+
 
 # Chạy ứng dụng
 

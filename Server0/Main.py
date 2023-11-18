@@ -46,23 +46,25 @@ def create_item_frame(item : Item):
     info_frame.columnconfigure(1, weight=1)
     info_frame.columnconfigure(2, weight=1)
     
-    name_label = tk.Label(info_frame, text=item.hostname, width=20)
+    name_label = tk.Label(info_frame, text=item.hostname, width=20, fg="darkgreen")
     name_label.grid(row=0, column=0)
     
     status_label = tk.Label(info_frame, text=item.status, width = 20)
     status_label.grid(row=0, column=2)
     if(item.status == "ONLINE"):
-        status_label.config(fg = "#00FF00")
+        status_label.config(fg = "green")
     else:
-        status_label.config(fg="#FF0000")
+        status_label.config(fg="red")
     
-    last_ping_time_label = tk.Label(info_frame, text=item.last_ping_time, width = 20)
+    last_ping_time_label = tk.Label(info_frame, text=item.last_ping_time, width=20, fg="#FFA500")
+
     last_ping_time_label.grid(row=0, column=1)
     
-    ping_button = tk.Button(item_frame, text = "Ping",command=lambda: ping(item,last_ping_time_label,status_label), bg="#98F5FF", activebackground="#FFCCCC")
+    
+    ping_button = tk.Button(item_frame, text = "Ping",command=lambda: ping(item,last_ping_time_label,status_label), bg="#80CED7", activebackground="#A9DFBF")
     ping_button.pack(side = "right")
     
-    ping_button = tk.Button(item_frame, text = "Discover",command=lambda: discover(item.hostname), bg="#7FFF00", activebackground="#FFCCCC")
+    ping_button = tk.Button(item_frame, text = "Discover",command=lambda: discover(item.hostname), bg="#82E0AA", activebackground="#A9DFBF")
     ping_button.pack(side = "right")
 
     return (last_ping_time_label,status_label)
@@ -202,17 +204,17 @@ root.geometry("600x400+100+100")
 root.resizable(width=False, height=False)
 
 # Tạo khung cho vùng phía trên
-header_frame = tk.Frame(root, borderwidth=2, relief="solid")
+header_frame = tk.Frame(root, borderwidth=2, relief="solid", bg="#4CAF50")
 header_frame.pack(fill="x")
 
-header_name_label = tk.Label(header_frame, text="Name", bg="lightgray")
+header_name_label = tk.Label(header_frame, text="Name", bg="#4CAF50", fg="white", font=("Arial", 10, "bold"))
 header_name_label.grid(row=0, column=0, padx=50, sticky="w")
 
-header_time_label = tk.Label(header_frame, text="Last Ping Time", bg="lightgray")
+header_time_label = tk.Label(header_frame, text="Last Ping Time", bg="#4CAF50", fg="white", font=("Arial", 10, "bold"))
 header_time_label.grid(row=0, column=1, padx=40, sticky="e")
 
-header_time_label = tk.Label(header_frame, text="Status", bg="lightgray")
-header_time_label.grid(row=0, column=2, padx=45, sticky="e")
+header_status_label = tk.Label(header_frame, text="Status", bg="#4CAF50", fg="white", font=("Arial", 10, "bold"))
+header_status_label.grid(row=0, column=2, padx=45, sticky="e")
 
 # Tạo thanh trượt
 scrollbar = Scrollbar(root)
@@ -247,11 +249,14 @@ button_frame = tk.Frame(root, borderwidth=2, relief="solid", pady=10)
 button_frame.pack(side="bottom", fill="x", anchor="s")  # Thay đổi khoảng cách ngang
 
 # Tạo các nút
-button_ping_all = tk.Button(button_frame, text="Ping all", command= ping_all, bg="#00FF66", activebackground="#CCFF99")
-button_cli = tk.Button(button_frame, text="Open CLI", comman = show_cli_popup, bg="#00FF66", activebackground="#CCFF99")
+button_reload = tk.Button(button_frame, text="Reload", bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
+button_reload.pack(side="left", padx=10)
 
-button_ping_all.pack(side = "left",padx=30)
-button_cli.pack(side = "right" ,padx = 30)
+button_ping_all = tk.Button(button_frame, text="Ping all", command=ping_all, bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
+button_ping_all.pack(side="left", padx=10)
+
+button_cli = tk.Button(button_frame, text="Open CLI", command=show_cli_popup, bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
+button_cli.pack(side="left", padx=10)
 
 #chạy ứng dụng
 def on_closing():
