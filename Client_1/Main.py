@@ -6,12 +6,20 @@ import tkinter as tk
 from tkinter import ANCHOR, W, Label, PhotoImage, Canvas, Scrollbar, filedialog
 from turtle import bgcolor, color, update, width
 from datetime import datetime
+from tkinter import simpledialog
 import shutil
 from Client import *
 # import Client
+def get_server_ip():
+    global server_ip
+    server_ip = simpledialog.askstring("Server IP", "Enter Server IP:")
+    if server_ip:
+        print("Server IP set to:", server_ip)
+get_server_ip()
+
 clientIP = socket.gethostbyname(socket.gethostname())
 hostnameClient = "client" + clientIP.split('.')[-1]
-client = Client(10, serverSocket = ("192.168.124.235", 1234), clientSocket = (clientIP, 5002), hostname = hostnameClient)
+client = Client(10, serverSocket = (server_ip, 1234), clientSocket = (clientIP, 5002), hostname = hostnameClient)
 
 client.connectServer()
 client.publish(fname = None, allFile= True)
@@ -32,10 +40,14 @@ class Item:
         self.icon = self.get_icon_with_type()
 
     def get_icon_with_type(self):
-        if self.file_type=="image/jpeg":
-            return "Images/apple.png"
+        if self.file_type == "image/png":
+            return "Images/png.png"
+        elif self.file_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            return "Images/docx.png"
+        elif self.file_type == "application/pdf":
+            return "Images/pdf.png"
         else:
-            return "Images/blueberry.png"
+            return "Images/folder.png"
     
     def format_last_fetch_time(self):
         # Chuyển last_fetch_time từ dạng timestamp sang datetime và định dạng lại
@@ -127,20 +139,49 @@ def publish_file_btn():
 
 def publish_file(lname, fname):
     try:
-        destination_path = os.getcwd()+"/Repository"
-        shutil.move(os.path.normpath(lname), destination_path)
+        destination_path = os.getcwd() + "/Repository"
         new_path = os.path.join(destination_path, fname)
+        shutil.move(os.path.normpath(lname), destination_path)
         os.rename(os.path.join(destination_path, os.path.basename(lname)), new_path)
-        print(f"File moved from {lname} to {destination_path} and rename to {fname}")
+        print(f"File moved from {lname} to {destination_path} and renamed to {fname}")
+
+        # Lấy loại file từ đường dẫn mới
+        file_type, _ = mimetypes.guess_type(new_path)
+        
         file_name = os.path.basename(new_path)
-        add_item(file_name)
+        item = Item(file_type, file_name, os.path.getmtime(new_path))
+        add_item(item)
+
         client.publish(fname)
-        #update_item()
     except Exception as e:
         print(f"Error: {e}")
 
     # thông báo lên server
 def request_file_popup():
+    def request_fetch():
+        file_name = file_name_entry.get()
+        if file_name:
+            response = messagebox.askyesno(
+                "Accept fetch request",
+                f"Accept fetch request with file '{file_name}' from '{client.hostname}'?"
+            )
+
+            if response:
+                def fetch_file():
+                    success = client.fetch(file_name)
+                    if success:
+                        client.publish(file_name)
+                        add_item(file_name)
+                    else:
+                        messagebox.showerror("Fetch Failed", "Failed to fetch the file.")
+                
+                # Tạo một thread mới để thực hiện việc fetch file
+                fetch_thread = threading.Thread(target=fetch_file)
+                fetch_thread.start()
+                
+            # Đóng cửa sổ popup sau khi xử lý xong
+            request_popup.destroy()
+
     # Tạo cửa sổ popup
     request_popup = tk.Toplevel(root)
     request_popup.title("Request Fetch File")
@@ -152,23 +193,9 @@ def request_file_popup():
     file_name_label = tk.Label(entry_frame, text="Enter File Name:")
     file_name_label.pack(side="left")
 
+    global file_name_entry
     file_name_entry = tk.Entry(entry_frame)
     file_name_entry.pack(side="left")
-
-    def request_fetch():
-        file_name = file_name_entry.get()
-        if file_name:
-            # Xử lý tên file và yêu cầu file ở đây
-            #todo
-            #
-            #
-            #
-            show_accept_popup(client.hostname,file_name)
-            #client.fetch(file_name)   
-            
-            print(f"Requesting file: {file_name}")
-            # Đóng cửa sổ popup sau khi xử lý xong
-            request_popup.destroy()
 
     request_button = tk.Button(request_popup, text="Request", command=request_fetch, bg="#4CAF50", fg="white", activebackground="#CCFF99")
     request_button.pack()
@@ -285,12 +312,10 @@ def update_item():
 
         for file in files:
             file_path = os.path.join(directory_path, file)  # Đường dẫn đầy đủ đến tệp
-            file_type, encoding = mimetypes.guess_type(file)
+            file_type, encoding = mimetypes.guess_type(file_path)
             item = Item(file_type, file, os.path.getmtime(file_path))  # Lấy thời gian sửa đổi từ đường dẫn đầy đủ
             item.get_icon_with_type()  # Gọi phương thức này để thiết lập biểu tượng dựa trên loại tệp
             items.append(item)
-
-
     # Thêm các mục vào danh sách
     for item in items:
         create_item_frame(item)
