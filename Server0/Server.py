@@ -168,7 +168,7 @@ class Server:
                 l = client.recv(MAX_HEADERS_SIZE)
                 # decode and remove null
                 length = l.decode("utf8").replace("\x00", "")
-
+                print(length)
                 packet = None
                 if length:
                     data = client.recv(int(length))
