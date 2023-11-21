@@ -326,6 +326,10 @@ def add_item(file):
     item.get_icon_with_type()  # Gọi phương thức này để thiết lập biểu tượng dựa trên loại tệp
     items.append(item)
     create_item_frame(item)
+    list_frame.update_idletasks()
+    list_frame_height = sum(child.winfo_height() for child in list_frame.winfo_children())
+    canvas.configure(scrollregion=canvas.bbox("all"), height=min(list_frame_height, canvas.winfo_height()))
+    on_configure(None)
 update_item()
 
 # Thiết lập canvas để làm việc với thanh trượt
@@ -333,7 +337,7 @@ list_frame.update_idletasks()
 
 def on_configure(event):
     canvas.configure(scrollregion=canvas.bbox("all"))
-
+list_frame_id = canvas.create_window((0, 0), window=list_frame, anchor="nw")
 canvas.bind('<Configure>', on_configure)
 
 scrollbar.config(command=canvas.yview)
@@ -346,9 +350,12 @@ button_frame.pack(side="bottom", fill="x", anchor="s")
 button_publish = tk.Button(button_frame, text="Publish file", command=publish_file_btn, bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
 button_request = tk.Button(button_frame, text="Request fetch file", command=request_file_popup, bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
 button_cli = tk.Button(button_frame, text="Open CLI", command=show_cli_popup, bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
-button_publish.pack(side="left", padx=60)  
-button_request.pack(side="left", padx=50)  
-button_cli.pack(side="left", padx=50)
+button_publish.grid(row=0, column=0, padx=10, pady=5, sticky="ew")  
+button_request.grid(row=0, column=1, padx=10, pady=5, sticky="ew")  
+button_cli.grid(row=0, column=2, padx=10, pady=5, sticky="ew")  
+button_frame.grid_columnconfigure(0, weight=1)
+button_frame.grid_columnconfigure(1, weight=1)
+button_frame.grid_columnconfigure(2, weight=1)
 
 
 
