@@ -78,7 +78,7 @@ class Client:
             print("client_socket: ", self.client_peer, "\n")
             
             print("You need to connect to server first!")
-            return
+            return 0
 
         self.chosenFileName = fname
         packet = HSTTP()
@@ -86,7 +86,7 @@ class Client:
         for file in listfile:
             if file == fname:
                 print(fname,"has already existed in client's repository")
-                return 0
+                return 1
         # firstly, fetch
         initLength = len(self.PEERS_SOCKETS) # get the initial length of PEERS_ADDRESS
         packet.fetch(fname, sender = self.hostname, 
@@ -115,9 +115,9 @@ class Client:
         time.sleep(TIME)
         
         if os.path.exists(self.PATH + fname):
-            return True
+            return 2
         else:
-            return False
+            return 0
     #==================================
 
     def handleMessage(self, packet, acceptParams: tuple):

@@ -9,7 +9,7 @@ def getDataLengthInBytes(data) -> bytes:
     length = bytes(str(len(data)), "utf8") # get length of data in bytes
     len_diff = MAX_HEADERS_SIZE - len(length) # get different
     length +=  bytes("\0" * len_diff, "utf8") # then padding
-    print("length: ", length)
+    #print("length: ", length)
     return length
 
 class HSTTP:

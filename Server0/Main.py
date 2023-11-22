@@ -126,8 +126,7 @@ def discover(hostname):
 def ping_all():
     for item_tuple in items:
         item, (time_label, status_label) = item_tuple
-        ping(item,time_label,status_label)  
-    update_item() 
+        ping(item,time_label,status_label)   
 items = []
 def update_item():
     clear_frame(list_frame)
