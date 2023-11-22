@@ -161,12 +161,12 @@ def request_file_popup():
     def request_fetch():
         file_name = file_name_entry.get()
         if file_name:
-            response = messagebox.askyesno(
-                "Accept fetch request",
-                f"Accept fetch request with file '{file_name}' from '{client.hostname}'?"
-            )
+            # response = messagebox.askyesno(
+            #     "Accept fetch request",
+            #     f"Accept fetch request with file '{file_name}' from '{client.hostname}'?"
+            # )
 
-            if response:
+            # if response:
                 def fetch_file():
                     success = client.fetch(file_name)
                     if success:

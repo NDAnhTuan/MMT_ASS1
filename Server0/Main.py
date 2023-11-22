@@ -127,6 +127,8 @@ def ping_all():
     for item_tuple in items:
         item, (time_label, status_label) = item_tuple
         ping(item,time_label,status_label)   
+
+
 items = []
 def update_item():
     clear_frame(list_frame)
@@ -249,14 +251,16 @@ button_frame.pack(side="bottom", fill="x", anchor="s")  # Thay đổi khoảng c
 
 # Tạo các nút
 button_reload = tk.Button(button_frame, text="Reload", bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00", command=update_item)
-button_reload.pack(side="left", padx=10)
+button_reload.grid(row=0, column=0, padx=10, pady=5, sticky="ew")
 
 button_ping_all = tk.Button(button_frame, text="Ping all", command=ping_all, bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
-button_ping_all.pack(side="left", padx=10)
+button_ping_all.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
 
 button_cli = tk.Button(button_frame, text="Open CLI", command=show_cli_popup, bg="#004d00", fg="white", activebackground="#CCFF99", highlightbackground="#004d00")
-button_cli.pack(side="left", padx=10)
-
+button_cli.grid(row=0, column=2, padx=10, pady=5, sticky="ew")
+button_frame.grid_columnconfigure(0, weight=1)
+button_frame.grid_columnconfigure(1, weight=1)
+button_frame.grid_columnconfigure(2, weight=1)
 #chạy ứng dụng
 def on_closing():
     # if os.path.exists(directory_path):
