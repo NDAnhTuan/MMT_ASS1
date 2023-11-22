@@ -92,15 +92,21 @@ class Client:
         packet.fetch(fname, sender = self.hostname, 
                      source = self.CLIENT_SOCKET)
         self.sendToHost(packet, self.server_socket)
-
+        print("Tôi đang ở while")
         # then, wait for changes in length of PEERS_ADDRESS (means that client has received response message)
-        while len(self.PEERS_SOCKETS) - initLength <= 0:
-            pass
-
+        # while len(self.PEERS_SOCKETS) - initLength <= 0:
+        #     pass
+        time.sleep(TIME * 2)
+        print("tôi đã out ra while")
         #self.connectToPeers(self.PEERS_SOCKETS[-1]) # connect to peer
-        for peer_socket in self.PEERS_SOCKETS[-1]: # concurrenly connect to public and private peer addr
+        checkPeer = False
+        if  not self.PEERS_SOCKETS:
+            return 0
+        for peer_socket in self.PEERS_SOCKETS: # concurrenly connect to public and private peer addr
+            2
             try:
                 self.connectToPeers(peer_socket)
+                checkPeer = True
             except:
                 continue
             else:
@@ -125,9 +131,9 @@ class Client:
         
         if packet is not None and type(packet) is HSTTP:
             if packet.type == 0: # open connection
+                print("Someone say hi to me! 1")
                 self.CLIENT_SOCKET = (socket.gethostbyname(socket.gethostname()), 
                                       packet.payload[1]) # (local ip, ex)
-
                 self.client_peer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.client_peer.setsockopt(socket.SOL_SOCKET, 
                                             socket.SO_REUSEADDR, 1)
@@ -139,9 +145,12 @@ class Client:
                 self.listenThread[-1].start()
                 #print("client: ", self.client_peer)
             elif packet.type == 3: # response fetch
+                print("Someone say hi to me! 3")
                 # payload format for response fetch: "[self.hostname, (public addr, private addr)]"
+                print("response fetch: " + packet.payload[1])
                 self.PEERS_SOCKETS.append(packet.payload[1])
             elif packet.type == 4: # request file
+                print("Someone say hi to me! 4")
                 source, requestedFname = packet.sourceSocket, packet.payload
                 # if client receive this message, this means that some
                 # peer want to create a connection to this client
@@ -165,6 +174,7 @@ class Client:
                 self.sendToHost(sendingPacket, self.peer_client)
             elif packet.type == 5: # "send file" message
                 # this type of messages contains requested file
+                print("Someone say hi to me! 5")
                 with open(self.PATH + self.chosenFileName, "wb") as f:
                     # if client receive None/type != 5 packet more than 
                     # countNone times it stops listening
@@ -196,7 +206,7 @@ class Client:
             elif packet.type == 7: # discover message
                 self.publish(fname = None, allFile = True)
             elif packet.type == 8: # ping message
-                print("Someone say hi to me!")
+                print("Someone say hi to me 8!")
                 sendingPacket = HSTTP()
                 sendingPacket.responsePing(sender = self.hostname)
                 self.sendToHost(sendingPacket, self.server_socket)

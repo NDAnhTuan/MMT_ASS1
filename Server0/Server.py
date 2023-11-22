@@ -113,9 +113,12 @@ class Server:
                     
                 print(packet.hostname + ": " + packet.payload)
             elif packet.type == 2: #fetch
+                print("Tôi đang fetch")
                 listFile = os.listdir(self.pathToTrackFname)
+                # checkFetch = False
                 for file in listFile:
                     if file.endswith(".txt") and self.ping(file.split(".")[0]): # read each tracked file and client must be online
+                        print("tôi đang dò client "+ file + " xem ổng có file cần tìm kh")
                         with open(file, "r") as f:
                             # if request file found in some clients
                             if packet.payload in f.read().split(" "):
@@ -127,7 +130,16 @@ class Server:
                                 print("fetch: ", 
                                       self.clientAddr[file.split(".")[0]])
                                 self.sendToHost(tempPack, client)
+                                # checkFetch = True
                                 break
+                # if not checkFetch:
+                #     tempPack = HSTTP()
+                #     tempPack.responseFetch(
+                #         # send target identity in the response message
+                #         ""
+                #     )
+                #     self.sendToHost(tempPack, client)
+                #     print("tôi ếu tìm ra rồi")
             elif packet.type == 9: # online
                 if packet.hostname is None:
                     packet.hostname = "Target client"
@@ -161,7 +173,7 @@ class Server:
     #đọc tín hiệu từ client
     def onNewClient(self, acceptParam: tuple): # acceptParam: (client, addr)
         client, addr = acceptParam
-
+        print("OnNewClient:")
         try:
             print('Connected by', addr)
             while True:
