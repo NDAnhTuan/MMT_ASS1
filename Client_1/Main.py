@@ -108,8 +108,9 @@ def publish_file_btn():
                 try:
                     file_name = os.path.basename(tempdir)
                     destination_path = os.path.join(os.getcwd(), "Repository", new_name)
-                    shutil.move(tempdir, destination_path)
-                    print(f"File moved and renamed from {tempdir} to {destination_path}")
+                    # shutil.move(tempdir, destination_path)
+                    shutil.copy(tempdir, destination_path)
+                    print(f"File copied and renamed from {tempdir} to {destination_path}")
                     file_name = os.path.basename(destination_path)
                     add_item(file_name)
                     #update_item()
