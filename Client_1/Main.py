@@ -192,7 +192,7 @@ def request_file_popup():
     file_name_label.pack(side="left")
 
     global file_name_entry
-    file_name_entry = tk.Entry(entry_frame)
+    file_name_entry = tk.Entry(entry_frame, width= 600)
     file_name_entry.pack(side="left")
 
     request_button = tk.Button(request_popup, text="Request", command=request_fetch, bg="#4CAF50", fg="white", activebackground="#CCFF99")
@@ -230,7 +230,7 @@ def on_enter(event):
         fname = parts[1]
         print(f"Command: {command}, Fetch Name: {fname}")
         # todo : done
-        show_accept_popup(client.hostname,fname)
+        show_accept_popup(client.peer_client,fname) ##hostname
     else:
         print("Nhap sai")
 
@@ -249,9 +249,6 @@ def show_cli_popup():
     file_name_label = tk.Label(entry_frame, text="CLI:")
     file_name_label.pack(side="left")
 
-    global file_name_entry
-    file_name_entry = tk.Entry(entry_frame, width=600)
-    file_name_entry.pack(side="left")
 
     # Gắn sự kiện Enter với hàm on_enter
     file_name_entry.bind('<Return>', on_enter)

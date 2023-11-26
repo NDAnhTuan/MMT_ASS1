@@ -103,7 +103,6 @@ class Client:
         if  not self.PEERS_SOCKETS:
             return 0
         for peer_socket in self.PEERS_SOCKETS: # concurrenly connect to public and private peer addr
-            2
             try:
                 self.connectToPeers(peer_socket)
                 checkPeer = True
