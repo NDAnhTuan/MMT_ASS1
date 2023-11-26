@@ -19,7 +19,7 @@ get_server_ip()
 
 clientIP = socket.gethostbyname(socket.gethostname())
 hostnameClient = "client" + clientIP.split('.')[-1]
-client = Client(10, serverSocket = (server_ip, 1234), clientSocket = (clientIP, 5002), hostname = hostnameClient)
+client = Client(10, serverSocket = (server_ip, 1234), clientSocket = (clientIP, 5002), hostname = socket.gethostname())
 
 client.connectServer()
 client.publish(fname = None, allFile= True)
