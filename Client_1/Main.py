@@ -251,7 +251,9 @@ def show_cli_popup():
     file_name_label = tk.Label(entry_frame, text="CLI:")
     file_name_label.pack(side="left")
 
-
+    global file_name_entry
+    file_name_entry = tk.Entry(entry_frame, width=600)
+    file_name_entry.pack(side="left")
     # Gắn sự kiện Enter với hàm on_enter
     file_name_entry.bind('<Return>', on_enter)
 
