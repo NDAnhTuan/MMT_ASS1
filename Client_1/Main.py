@@ -142,9 +142,10 @@ def publish_file(lname, fname):
     try:
         destination_path = os.getcwd() + "/Repository"
         new_path = os.path.join(destination_path, fname)
-        shutil.move(os.path.normpath(lname), destination_path)
+        # shutil.move(os.path.normpath(lname), destination_path)
+        shutil.copy(os.path.normpath(lname), destination_path)
         os.rename(os.path.join(destination_path, os.path.basename(lname)), new_path)
-        print(f"File moved from {lname} to {destination_path} and renamed to {fname}")
+        print(f"File copied from {lname} to {destination_path} and renamed to {fname}")
 
         # Lấy loại file từ đường dẫn mới
         file_type, _ = mimetypes.guess_type(new_path)
@@ -233,7 +234,8 @@ def on_enter(event):
         # todo : done
         # show_accept_popup(client.peer_client,fname) ##hostname
     else:
-        print("Nhap sai")
+        messagebox.showerror("CLI Failed", "Command syntax is wrong.")
+
 
     # Xóa nội dung trường nhập liệu
     file_name_entry.delete(0, 'end')
@@ -250,7 +252,9 @@ def show_cli_popup():
     file_name_label = tk.Label(entry_frame, text="CLI:")
     file_name_label.pack(side="left")
 
-
+    global file_name_entry
+    file_name_entry = tk.Entry(entry_frame, width=600)
+    file_name_entry.pack(side="left")
     # Gắn sự kiện Enter với hàm on_enter
     file_name_entry.bind('<Return>', on_enter)
 
@@ -299,7 +303,6 @@ canvas.create_window((0, 0), window=list_frame, anchor="nw")
 
 # Đường dẫn đến thư mục bạn muốn kiểm tra trong kho
 directory_path = os.getcwd()+"/Repository"
-print(directory_path)
 
 items = []
 def update_item():

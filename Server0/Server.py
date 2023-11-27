@@ -50,7 +50,6 @@ class Server:
             time.sleep(TIME) #wait for update tracked file
             return True
         except:
-            print("Disconnect hoac la khong tim thay")
             return False
     def ping(self, hostname):
         packet = HSTTP()
@@ -64,14 +63,10 @@ class Server:
 
     def handleMessage(self, packet: HSTTP, senderSocket: socket.socket = None):
         client, addr = senderSocket
-        print(f"client: {client} and addr: {addr}")
         client_IP, client_Port = addr
         if packet is not None and type(packet) is HSTTP:
-            print(packet.hostname, ": ", client)
             if packet.type == 0: # open connection
-                # print("open: ", packet.hostname)
                 fileName = packet.hostname + ".txt"
-                print(fileName)
                 filepath = os.path.join("/", fileName)
                 if not os.path.isfile(filepath):
                     open(fileName,"a")
@@ -111,14 +106,11 @@ class Server:
                     print("Tracked file doesn't exist !")
                     return 0    
                     
-                print(packet.hostname + ": " + packet.payload)
             elif packet.type == 2: #fetch
-                print("Tôi đang fetch")
                 listFile = os.listdir(self.pathToTrackFname)
                 checkFetch = False
                 for file in listFile:
                     if file.endswith(".txt") and self.ping(file.split(".")[0]): # read each tracked file and client must be online
-                        print("tôi đang dò client "+ file + " xem ổng có file cần tìm kh")
                         with open(file, "r") as f:
                             # if request file found in some clients
                             if packet.payload in f.read().split(" "):
@@ -127,8 +119,6 @@ class Server:
                                     # send target identity in the response message
                                     self.clientAddr[file.split(".")[0]]
                                 )
-                                print("fetch: ", 
-                                      self.clientAddr[file.split(".")[0]])
                                 self.sendToHost(tempPack, client)
                                 checkFetch = True
                                 break
@@ -136,17 +126,9 @@ class Server:
                     tempPack = HSTTP()
                     tempPack.responseFetch(
                 # send target identity in the response message
-                        "None"
+                        "N"
                     )
                     self.sendToHost(tempPack, client)
-                # if not checkFetch:
-                #     tempPack = HSTTP()
-                #     tempPack.responseFetch(
-                #         # send target identity in the response message
-                #         ""
-                #     )
-                #     self.sendToHost(tempPack, client)
-                #     print("tôi ếu tìm ra rồi")
             elif packet.type == 9: # online
                 if packet.hostname is None:
                     packet.hostname = "Target client"
@@ -180,7 +162,6 @@ class Server:
     #đọc tín hiệu từ client
     def onNewClient(self, acceptParam: tuple): # acceptParam: (client, addr)
         client, addr = acceptParam
-        print("OnNewClient:")
         try:
             print('Connected by', addr)
             while True:
@@ -199,18 +180,3 @@ class Server:
         finally:
             client.close()
             self.remaining += 1
-
-# serverIP = socket.gethostbyname(socket.gethostname())
-# print("Server address: ", serverIP)
-# server = Server(3, "./", serverSocket = (serverIP, 1234))
-# #server = Server(2, "./")
-
-# thread = threading.Thread(target = server.listenClients, args = ())
-# thread.start()
-
-  
-#input("press anything to continue..\n")
-# server.discover("client1")
-# server.discover("client2")
-#server.ping("client1")
-# server.ping("client2")

@@ -5,7 +5,7 @@ from fileinput import filename
 import os, mimetypes, re, shutil
 from email.mime import image
 import tkinter as tk
-from tkinter import ANCHOR, W, Label, PhotoImage, Canvas, Scrollbar, filedialog
+from tkinter import ANCHOR, W, Label, PhotoImage, Canvas, Scrollbar, filedialog, messagebox
 from turtle import bgcolor, color, update, width
 from datetime import datetime
 import shutil
@@ -77,7 +77,6 @@ def discover_popup(hostname):
     popup.title("List of files in "+hostname)
     popup.geometry("300x300")
     client_tracking = directory_path+"/"+ hostname + ".txt"
-    print(client_tracking)
     if os.path.exists(client_tracking):
         file_listbox = tk.Listbox(popup, selectmode=tk.SINGLE)
         with open(client_tracking,"r") as f:
@@ -109,19 +108,8 @@ def ping(item : Item, last_ping_time_label, status_label):
     last_ping_time_label.config(text = item.last_ping_time)
 
 def discover(hostname):
-    # try:
-    #     f = open(hostname + ".txt","r+")
-    #     files = f.read()
-    #     f.truncate(0)
-    #     f.close()
-    # except:
-    #     print(hostname + " doesn't exist")
-    #     return 0
     if(server.discover(hostname)):
         discover_popup(hostname)
-    # else :
-    #     f = open(hostname + ".txt","w")
-    #     f.write(files)
         
 def ping_all():
     for item_tuple in items:
@@ -170,7 +158,8 @@ def on_enter(event):
             if item.hostname == hostname:
                 ping(item,time_label,status_label)
     else:
-        print("Nhap sai")
+        messagebox.showerror("CLI Failed", "Command syntax is wrong.")
+
 
     # Xóa nội dung trường nhập liệu
     file_name_entry.delete(0, 'end')
