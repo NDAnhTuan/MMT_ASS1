@@ -104,7 +104,10 @@ class Client:
             print("dung lai di")
             return 0
         for peer_socket in self.PEERS_SOCKETS[-1]: # concurrenly connect to public and private peer addr
-            if str(peer_socket) == "None":
+            print(str(peer_socket))
+            print(type(peer_socket))
+            if str(peer_socket) == 'None':
+                print("Khong xai duoc")
                 continue
             try:
                 self.connectToPeers(peer_socket)
@@ -116,16 +119,19 @@ class Client:
 
         # thirdly, send a request to download file from target peer,
         # including client address
-        print("peer_client" + str(self.peer_client))
-        packet.requestFile(fname = fname, source = self.CLIENT_SOCKET)
-        self.sendToHost(packet, self.peer_client)
+        if (checkPeer):
+            print("peer_client" + str(self.peer_client))
+            packet.requestFile(fname = fname, source = self.CLIENT_SOCKET)
+            self.sendToHost(packet, self.peer_client)
 
-        # finally, wait for transfering
-        time.sleep(TIME)
-        
-        if os.path.exists(self.PATH + fname):
-            return 2
-        else:
+            # finally, wait for transfering
+            time.sleep(TIME)
+
+            if os.path.exists(self.PATH + fname):
+                return 2
+            else:
+                return 0
+        else: 
             return 0
     #==================================
 
