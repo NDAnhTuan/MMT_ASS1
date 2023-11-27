@@ -88,22 +88,22 @@ class Client:
         packet.fetch(fname, sender = self.hostname, 
                      source = self.CLIENT_SOCKET)
         self.sendToHost(packet, self.server_socket)
-        print("Tôi đang ở while")
+        # print("Tôi đang ở while")
         # then, wait for changes in length of PEERS_ADDRESS (means that client has received response message)
         while len(self.PEERS_SOCKETS) - initLength <= 0:
             pass
-        print("tôi đã out ra while")
-        print("day la cac peer xai dc" + str(self.PEERS_SOCKETS))
+        # print("tôi đã out ra while")
+        # print("day la cac peer xai dc" + str(self.PEERS_SOCKETS))
         # self.connectToPeers(self.PEERS_SOCKETS[-1]) # connect to peer
         checkPeer = False
         if  not self.PEERS_SOCKETS:
             # print("dung lai di")
             return 0
         for peer_socket in self.PEERS_SOCKETS[-1]: # concurrenly connect to public and private peer addr
-            print(str(peer_socket))
-            print(type(peer_socket))
+            # print(str(peer_socket))
+            # print(type(peer_socket))
             if str(peer_socket) == "N":
-                print("Khong xai duoc")
+                # print("Khong xai duoc")
                 continue
             try:
                 self.connectToPeers(peer_socket)
