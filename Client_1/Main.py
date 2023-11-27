@@ -169,6 +169,7 @@ def request_file_popup():
                 if int(success) == 2:
                     client.publish(file_name)
                     add_item(file_name)
+                    messagebox.showinfo("Fetch Successfully", "File fetch successfully !")
                 elif int(success) == 0:
                     messagebox.showerror("Fetch Failed", "Failed to fetch the file.")
                 else:
@@ -214,6 +215,21 @@ def request_file_popup():
 
 def on_enter(event):
     # Lấy nội dung đã nhập từ trường nhập liệu
+    def request_fetch(file_name):
+        if file_name:
+            def fetch_file():
+                success = client.fetch(file_name)
+                print(f"Succes:",success)
+                if int(success) == 2:
+                    client.publish(file_name)
+                    add_item(file_name)
+                    messagebox.showinfo("Fetch Successfully", "File fetch successfully !")
+                elif int(success) == 0:
+                    messagebox.showerror("Fetch Failed", "Failed to fetch the file.")
+                else:
+                    messagebox.showerror("Fetch Failed",file_name + " has already existed in client's repository")
+            fetch_thread = threading.Thread(target=fetch_file)
+            fetch_thread.start()
     cli_input = file_name_entry.get().strip()  # Loại bỏ khoảng trắng thừa
     publish_line = r'^publish\s+.+\s+.+$'
     fetch_line = r'^fetch\s+.+$'
@@ -231,7 +247,7 @@ def on_enter(event):
         fname = parts[1]
         print(f"Command: {command}, Fetch Name: {fname}")
         # todo : done
-        # show_accept_popup(client.peer_client,fname) ##hostname
+        request_fetch(fname) ##hostname
     else:
         messagebox.showerror("CLI Failed", "Command syntax is wrong.")
 
