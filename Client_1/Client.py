@@ -94,15 +94,18 @@ class Client:
         self.sendToHost(packet, self.server_socket)
         print("Tôi đang ở while")
         # then, wait for changes in length of PEERS_ADDRESS (means that client has received response message)
-        # while len(self.PEERS_SOCKETS) - initLength <= 0:
-        #     pass
-        time.sleep(TIME * 2)
+        while len(self.PEERS_SOCKETS) - initLength <= 0:
+            pass
         print("tôi đã out ra while")
+        print("day la cac peer xai dc" + str(self.PEERS_SOCKETS))
         #self.connectToPeers(self.PEERS_SOCKETS[-1]) # connect to peer
         checkPeer = False
         if  not self.PEERS_SOCKETS:
+            print("dung lai di")
             return 0
-        for peer_socket in self.PEERS_SOCKETS: # concurrenly connect to public and private peer addr
+        for peer_socket in self.PEERS_SOCKETS[-1]: # concurrenly connect to public and private peer addr
+            if str(peer_socket) == "None":
+                continue
             try:
                 self.connectToPeers(peer_socket)
                 checkPeer = True
@@ -113,6 +116,7 @@ class Client:
 
         # thirdly, send a request to download file from target peer,
         # including client address
+        print("peer_client" + str(self.peer_client))
         packet.requestFile(fname = fname, source = self.CLIENT_SOCKET)
         self.sendToHost(packet, self.peer_client)
 
@@ -146,7 +150,7 @@ class Client:
             elif packet.type == 3: # response fetch
                 print("Someone say hi to me! 3")
                 # payload format for response fetch: "[self.hostname, (public addr, private addr)]"
-                print("response fetch: " + packet.payload[1])
+                print("response fetch: " + str(packet.payload[1]))
                 self.PEERS_SOCKETS.append(packet.payload[1])
             elif packet.type == 4: # request file
                 print("Someone say hi to me! 4")

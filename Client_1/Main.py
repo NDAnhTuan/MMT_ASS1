@@ -161,21 +161,21 @@ def publish_file(lname, fname):
 def request_file_popup():
     def request_fetch():
         file_name = file_name_entry.get()
-        
-        def fetch_file():
-            success = client.fetch(file_name)
-            print(f"Succes:",success)
-            if int(success) == 2:
-                client.publish(file_name)
-                add_item(file_name)
-            elif int(success) == 0:
-                messagebox.showerror("Fetch Failed", "Failed to fetch the file.")
-            else:
-                messagebox.showerror("Fetch Failed",file_name + " has already existed in client's repository")
+        if file_name:
+            def fetch_file():
+                success = client.fetch(file_name)
+                print(f"Succes:",success)
+                if int(success) == 2:
+                    client.publish(file_name)
+                    add_item(file_name)
+                elif int(success) == 0:
+                    messagebox.showerror("Fetch Failed", "Failed to fetch the file.")
+                else:
+                    messagebox.showerror("Fetch Failed",file_name + " has already existed in client's repository")
         
         # Tạo một thread mới để thực hiện việc fetch file
-        fetch_thread = threading.Thread(target=fetch_file)
-        fetch_thread.start()
+            fetch_thread = threading.Thread(target=fetch_file)
+            fetch_thread.start()
         
             # Đóng cửa sổ popup sau khi xử lý xong
         request_popup.destroy()
@@ -198,18 +198,18 @@ def request_file_popup():
     request_button = tk.Button(request_popup, text="Request", command=request_fetch, bg="#4CAF50", fg="white", activebackground="#CCFF99")
     request_button.pack()
 
-def show_accept_popup(client_request_name, request_file_name):
-    response = messagebox.askyesno(
-        "Accept fetch request",
-        f"Accept fetch request with file '{request_file_name}' from '{client_request_name}'?"
-    )
+# def show_accept_popup(client_request_name, request_file_name):
+#     response = messagebox.askyesno(
+#         "Accept fetch request",
+#         f"Accept fetch request with file '{request_file_name}' from '{client_request_name}'?"
+#     )
 
-    if response:
-        if client.fetch(request_file_name):
-            client.publish(request_file_name)
-            add_item(request_file_name)
-        else:
-            messagebox.showerror("Fetch Failed", "Failed to fetch the file.")
+#     # if response:
+#     #     if client.fetch(request_file_name):
+#     #         client.publish(request_file_name)
+#     #         add_item(request_file_name)
+#     #     else:
+#     #         messagebox.showerror("Fetch Failed", "Failed to fetch the file.")
 
 def on_enter(event):
     # Lấy nội dung đã nhập từ trường nhập liệu
@@ -230,7 +230,7 @@ def on_enter(event):
         fname = parts[1]
         print(f"Command: {command}, Fetch Name: {fname}")
         # todo : done
-        show_accept_popup(client.peer_client,fname) ##hostname
+        # show_accept_popup(client.peer_client,fname) ##hostname
     else:
         print("Nhap sai")
 

@@ -115,7 +115,7 @@ class Server:
             elif packet.type == 2: #fetch
                 print("Tôi đang fetch")
                 listFile = os.listdir(self.pathToTrackFname)
-                # checkFetch = False
+                checkFetch = False
                 for file in listFile:
                     if file.endswith(".txt") and self.ping(file.split(".")[0]): # read each tracked file and client must be online
                         print("tôi đang dò client "+ file + " xem ổng có file cần tìm kh")
@@ -130,8 +130,15 @@ class Server:
                                 print("fetch: ", 
                                       self.clientAddr[file.split(".")[0]])
                                 self.sendToHost(tempPack, client)
-                                # checkFetch = True
+                                checkFetch = True
                                 break
+                if not checkFetch:
+                    tempPack = HSTTP()
+                    tempPack.responseFetch(
+                # send target identity in the response message
+                        "None"
+                    )
+                    self.sendToHost(tempPack, client)
                 # if not checkFetch:
                 #     tempPack = HSTTP()
                 #     tempPack.responseFetch(
