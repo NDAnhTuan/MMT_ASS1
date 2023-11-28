@@ -257,13 +257,21 @@ def on_enter(event):
 
 def show_cli_popup():
     popup = tk.Toplevel(root)
-    popup.geometry("600x30+150+150")
+    popup.geometry("600x110+150+150")
     popup.title("CLI")
 
     # Tạo một hộp để nhập tên file
     entry_frame = tk.Frame(popup)
     entry_frame.pack()
+    # Tạo một hộp để nhập tên file
+    entry_frame = tk.Frame(popup)
+    entry_frame.pack()
+    publish_instruction_label = tk.Label(entry_frame, text="Publish: Publish {lname} {fname}\n + lname: path to the file to publish\n + fname: the name saved in the client's repository",justify="left")
+    publish_instruction_label.pack(anchor="w")  # Căn chỉnh văn bản sang trái
 
+    # Tạo một nhãn hướng dẫn cho Fetch
+    fetch_instruction_label = tk.Label(entry_frame, text="Fetch: fetch {fname}\n + fname: The name of the file requested to fetch",justify="left")
+    fetch_instruction_label.pack(anchor="w")
     file_name_label = tk.Label(entry_frame, text="CLI:")
     file_name_label.pack(side="left")
 

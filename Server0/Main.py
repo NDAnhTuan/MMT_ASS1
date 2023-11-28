@@ -167,15 +167,21 @@ def on_enter(event):
 
 def show_cli_popup():
     popup = tk.Toplevel(root)
-    popup.geometry("600x30+150+150")
+    popup.geometry("600x110+150+150")
     popup.title("CLI")
 
     # Tạo một hộp để nhập tên file
     entry_frame = tk.Frame(popup)
     entry_frame.pack()
+    publish_instruction_label = tk.Label(entry_frame, text="+ Ping command: ping {hostname}",justify="left")
+    publish_instruction_label.pack(anchor="w")  # Căn chỉnh văn bản sang trái
 
+    # Tạo một nhãn hướng dẫn cho Fetch
+    fetch_instruction_label = tk.Label(entry_frame, text="+ Discover hostname: discover {hostname}\n",justify="left")
+    fetch_instruction_label.pack(anchor="w")
     file_name_label = tk.Label(entry_frame, text="CLI:")
     file_name_label.pack(side="left")
+   
 
     global file_name_entry
     file_name_entry = tk.Entry(entry_frame, width=600)
